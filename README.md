@@ -12,11 +12,11 @@ To get a local copy up and running, follow these simple example steps.
 ### Installation
 1. Clone the repository:
 git clone https://github.com/ShiRaw11/MovieBox11
-2.   Navigate to project
+2.   Navigate to project: 
 cd Movies
 
-3. Install dependancies
+3. Install dependancies: 
 npm install
 
-4.Start development server
+4.Start development server: 
 npm run dev

@@ -1,5 +1,5 @@
 import SideBar from "../components/sideBar";
-import React from 'react'
+import React from "react";
 import suggestion from "..//assets/sugestion.png";
 import { FaAngleDown, FaPlay, FaStar } from "react-icons/fa";
 import { IoTicketOutline } from "react-icons/io5";
@@ -14,19 +14,15 @@ function MovieDetails() {
   const [movies, setMovie] = useState({});
   const [error, setError] = useState(null);
   const { id } = useParams();
-  function getYear(releaseDate) {
+  function getUtc(releaseDate) {
     const date = new Date(releaseDate);
-
-    return date.getFullYear();
-  }
-  function Runtime(minutes) {
-    const hours = Math.floor(minutes / 60);
-    const remainingMinutes = minutes % 60;
-  
-    const hoursText = hours > 0 ? `${hours}h` : '';
-    const minutesText = remainingMinutes > 0 ? `${remainingMinutes}m` : '';
-  
-    return `${hoursText} ${minutesText}`;
+    const utcYear = date.getUTCFullYear();
+    const utcMonth = date.getUTCMonth() + 1; // Months are zero-based, so add 1
+    const utcDay = date.getUTCDate();
+    const UTCdate = `${utcYear}-${String(utcMonth).padStart(2, "0")}-${String(
+      utcDay
+    ).padStart(2, "0")}T00:00:00.000Z`;
+    return UTCdate;
   }
 
   useEffect(() => {
@@ -56,9 +52,9 @@ function MovieDetails() {
       </div>
 
       {error ? (
-        <div className="mt-[20%] ml-[10%]">
-          <h1>Error</h1>
-          <p className="text-error">
+        <div className="w-full h-[100vh]  border flex  flex-col justify-center items-center">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCO8LMgMrgQ7rBX6oVOczCcsCC8pWuIFZ2WkBzYXMMhv_SOity8iWegwH4JEuUD0wnIMY&usqp=CAU" alt="Sad emoticon"></img>
+          <p className="text-error text-[30px] font-bold">
             Sorry, there was an error fetching movie details. Please try again
             later.
           </p>
@@ -91,7 +87,7 @@ function MovieDetails() {
           <div className="flex mt-4 items-center ml-8 text-desc">
             <div className="flex  items-center  w-[480px] mt-2">
               <h
-                className="text-[16px] text-desc w-[50%] font-semibold flex items-center"
+                className="text-[16px] text-desc w-[40%] font-semibold flex items-center"
                 data-testid="movie-title"
               >
                 {movies.title} <GoDotFill className="text-black ml-2 h-2 w-2" />
@@ -99,12 +95,12 @@ function MovieDetails() {
 
               <h
                 data-testid="movie-release-date "
-                className="w-[12%] flex items-center ml-2"
+                className="w-[35%] text-[12px] flex items-center ml-2"
               >
-                {getYear(movies.release_date)}<GoDotFill className="text-black ml-2 h-2 w-2" />
-
+                {getUtc(movies.release_date)}
+                <GoDotFill className="text-black ml-2 h-2 w-2" />
               </h>
-              <h className="flex  w-[14%] items-center ml-2">
+              <h className="flex  w-[16%] items-center ml-2">
                 {" "}
                 PG-13 <GoDotFill className="text-black ml-2 h-2 w-2" />
               </h>
@@ -112,7 +108,7 @@ function MovieDetails() {
                 className="text-[18px] w-[20px] font-semibold w-[25%] ml-2 flex items-center "
                 data-testid="movie-runtime"
               >
-                {Runtime(movies.runtime)}
+                {movies.runtime} min
               </h>
             </div>
             <div className="flex ml-4">
@@ -147,17 +143,22 @@ function MovieDetails() {
               <div className="flex flex-col mt-5 ml-8">
                 <h>
                   {" "}
-                  Director :<h className="text-rose">  Joseph Kosinski </h>{" "}
+                  Director :<h className="text-rose"> Joseph Kosinski </h>{" "}
                 </h>
                 <h className="mt-5">
                   {" "}
                   Writers :{" "}
-                  <h className="text-rose"> Jim Cash, Jack Epps Jr,  Peter Craig</h>{" "}
+                  <h className="text-rose">
+                    {" "}
+                    Jim Cash, Jack Epps Jr, Peter Craig
+                  </h>{" "}
                 </h>
                 <h className="mt-5">
                   {" "}
                   Stars :{" "}
-                  <h className="text-rose">Tom Cruise, Jennifer Connelly, Miles Teller</h>{" "}
+                  <h className="text-rose">
+                    Tom Cruise, Jennifer Connelly, Miles Teller
+                  </h>{" "}
                 </h>
               </div>
 
@@ -185,7 +186,7 @@ function MovieDetails() {
                 buttonIconLeft={<TfiMenuAlt />}
                 buttonText={"More Watch options "}
                 buttonStyle={
-                  "rounded-lg w-[250px] bg-btn border border-rose text-rose mt-5"
+                  "rounded-lg w-[250px] bg-white border border-rose text-rose mt-5"
                 }
               />
               <div className="mt-2 w-[90%] ml-2 relative group">

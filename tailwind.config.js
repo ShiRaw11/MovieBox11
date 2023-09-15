@@ -27,9 +27,11 @@ export default {
       'red':'#ffa500',
       'desc':'#404040',
       'icon-bg':'#f3f4f680',
+      'redish':'#fda4af',
       '400':'#fda4af',
-      'btn':'#fecdd3',
+      '200':'#fecdd3',
       'error':'#b91c1c',
+      'blue':'#111827'
       
     },
     extend: {

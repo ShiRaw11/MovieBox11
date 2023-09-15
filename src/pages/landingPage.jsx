@@ -1,7 +1,7 @@
-import React from 'react'
+import React from "react";
 import logo from "..//assets/tv.png";
 import MovieSearch from "../components/search";
-import { FaSearch, FaImdb } from "react-icons/fa";
+import { FaSearch, FaImdb,FaFacebook, FaTwitter,FaYoutube,FaInstagram } from "react-icons/fa";
 import { BsPlayCircle, BsChevronRight } from "react-icons/bs";
 import { CgMenuRound } from "react-icons/cg";
 import MovieButton from "../components/button";
@@ -74,7 +74,7 @@ export const FeaturedMovie = () => {
   useEffect(() => {
     const options = {
       method: "GET",
-      url: "https://api.themoviedb.org/3/movie/popular?language=en-US&page=1",
+      url: "https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1",
 
       headers: {
         accept: "application/json",
@@ -90,20 +90,16 @@ export const FeaturedMovie = () => {
         const topMovies = results.slice(0, 10);
 
         setMovie(topMovies);
-        
       })
       .catch(function (error) {
         console.error(error);
       });
   }, []);
   return (
-    <div className=" h-[100vh] w-[100vw]">
+    <div className=" h-fit w-[100vw]">
       <div className="flex w-[90%] mx-auto  justify-between items-center mt-4">
         <h className="text-[36px] font-medium"> Featured Movie</h>
-        <a
-          href="/movie"
-          className="text-rose flex items-center cursor-pointer hover:font-bold "
-        >
+        <a className="text-rose flex items-center cursor-pointer hover:font-bold ">
           {" "}
           See More <BsChevronRight className="ml-2" />
         </a>
@@ -126,11 +122,35 @@ export const FeaturedMovie = () => {
   );
 };
 
+export const Footer = () => {
+  return(
+    <div className="flex flex-col justify-center h-[300px] items-center w-[100vw] mt-4">
+
+     <div className="flex text-blue w-[200px] justify-between">
+<FaFacebook/>
+<FaInstagram/>
+<FaTwitter/>
+<FaYoutube/>
+      </div> 
+      <div className="w-[500px] font-semibold mt-7 justify-around flex">
+        <a>Conditions of use</a>
+        <a>Privacy & Policy</a>
+        <a>Pressroom</a>
+
+      </div>
+      <div className="w-[400px] mt-5 justify-center flex">
+        <h className='text-gray text-[16px] font-semibold'>© 2021 MovieBox by Adriana Eka Prayudha  </h>
+      </div>
+    </div>
+  )
+}
+
 function LandingPage() {
   return (
     <>
       <Welcome />
       <FeaturedMovie />
+      <Footer/>
     </>
   );
 }

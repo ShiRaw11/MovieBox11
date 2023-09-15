@@ -1,3 +1,4 @@
+import React from 'react'
 import logo from "..//assets/tv.png";
 import MovieSearch from "../components/search";
 import { FaSearch, FaImdb } from "react-icons/fa";

@@ -1,5 +1,5 @@
 import SideBar from "../components/sideBar";
-
+import React from 'react'
 import suggestion from "..//assets/sugestion.png";
 import { FaAngleDown, FaPlay, FaStar } from "react-icons/fa";
 import { IoTicketOutline } from "react-icons/io5";

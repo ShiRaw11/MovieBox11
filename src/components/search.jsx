@@ -1,3 +1,4 @@
+import React from 'react'
 function MovieSearch({searchStyle,placeholder,iconPresent}) {
     return (
          <div className=" search">

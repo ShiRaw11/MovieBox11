@@ -1,4 +1,5 @@
 import logo from '..//assets/tv.png'
+import React from 'react'
 import MovieButton from './button'
 import NavLink from './link'
 import { GoHome } from "react-icons/go";

@@ -4,6 +4,7 @@ import imdb from '..//assets/imdb.png'
 import { FaHeart } from 'react-icons/fa';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import React from 'react'
 function MovieCard({image,date, title,rating,tomato,id}){
 
 const [isLoved, setIsLoved] = useState(false);

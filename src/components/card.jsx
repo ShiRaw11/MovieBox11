@@ -4,7 +4,7 @@ import { FaHeart } from "react-icons/fa";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import React from "react";
-function MovieCard({ image, date, title, rating, tomato, id }) {
+function MovieCard({ image, date, title, rating, tomato, id}) {
   const [isLoved, setIsLoved] = useState(false);
 
   const handleLoveClick = () => {
@@ -13,7 +13,7 @@ function MovieCard({ image, date, title, rating, tomato, id }) {
   return (
     <div data-testid="movie-card" className="h-[520px] w-[250px] mt-[20%]">
       <div className="relative">
-        <Link to={`/MovieBox11/${id}`} className="w-full h-auto">
+        <Link to={`/MovieBox11/${id}`} className="w-full h-auto" >
           <img
             data-testid="movie-poster"
             className="h-[370px]  border w-full object-cover "

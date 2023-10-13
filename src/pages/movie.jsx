@@ -10,22 +10,30 @@ import MovieButton from "../components/button";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import Loading from "./loading";
 function MovieDetails() {
   const [movies, setMovie] = useState({});
   const [error, setError] = useState(null);
   const { id } = useParams();
-  function getUtc(releaseDate) {
-    const date = new Date(releaseDate);
-    const utcYear = date.getUTCFullYear();
-    const utcMonth = date.getUTCMonth() + 1; // Months are zero-based, so add 1
-    const utcDay = date.getUTCDate();
-    const UTCdate = `${utcYear}-${String(utcMonth).padStart(2, "0")}-${String(
-      utcDay
-    ).padStart(2, "0")}T00:00:00.000Z`;
-    return UTCdate;
-  }
+  const [videoUrl, setVideoUrl] = useState('');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+
+    const videoUrls = {
+      "The Godfather": "https://www.youtube.com/embed/sY1S34973zA?si=qdyqxFcrVCz7SUX-",
+      "The Shawshank Redemption": "https://www.youtube.com/embed/NmzuHjWmXOc?si=DIMCH149h-BINj2t",
+      "The Godfather Part II": "https://www.youtube.com/embed/9O1Iy9od7-A?si=I56HLipJctgx2oRn",
+      "Schindler's List": "https://www.youtube.com/embed/mxphAlJID9U?si=PdmEEr-qEoDDqq9v",
+      "Dilwale Dulhani Le Jayenge": "https://www.youtube.com/embed/EIKZ7amRGwk?si=WNyhI9zzmyGp2hXx",
+      "12 Angry Men": "https://www.youtube.com/embed/_13J_9B5jEk?si=D1FqaWYuh_oRMmSc",
+      "Spirited Away": "https://www.youtube.com/embed/CHCUkXUPkFM?si=jUmOjKfrqbDexkA_",
+      "Parasite": "https://www.youtube.com/embed/SEUXfv87Wpk?si=FGZAC0Iaasl_QXOQ",
+      "Your Name.": "https://www.youtube.com/embed/xU47nhruN-Q?si=RIUB9apxkC941LNe",
+      "The Dark Knight": "https://www.youtube.com/embed/_PZpmTj1Q8Q?si=z9Dt4AvQ7W5UNHUA",
+      // Add more video URLs for each movie title
+    };
+    setTimeout(() => {
     const options = {
       method: "GET",
       url: `https://api.themoviedb.org/3/movie/${id}?language=en-US`,
@@ -40,11 +48,18 @@ function MovieDetails() {
       .request(options)
       .then(function (response) {
         setMovie(response.data);
+        const movie = response.data;
+       setVideoUrl(videoUrls[movie.title]);
+       setLoading(false); 
+   
       })
       .catch(function (error) {
         setError(error);
       });
+    }, 2000)
   }, [id]);
+
+
   return (
     <div className="flex">
       <div>
@@ -60,30 +75,18 @@ function MovieDetails() {
           </p>
         </div>
       ) : (
+        <div className="flex justify-center items-center">
+  {loading ? (
+        // Display the loading component while data is being fetched
+        <Loading/>
+      ) : (
         <div>
-          <div className="w-[78vw] relative h-[300px] ml-6 mt-6  ">
-            <img
-              className="h-[100%] w-[100%] object-cover rounded-lg"
-              src={`https://image.tmdb.org/t/p/original${movies.poster_path}`}
-            ></img>
-
-            <div className="absolute w-[120px] flex items-center justify-center h-[100px] top-1/3 left-1/2  ">
-              <button
-                className={
-                  "absolute w-[50px]  h-[50px] flex justify-center  items-center pl-2 rounded-full bg-icon-bg text-white hover:text-rose hover:bg-white"
-                }
-              >
-                <FaPlay className="w-6 h-6" />
-              </button>
-              <MovieButton
-                buttonText={"Watch Trailer "}
-                buttonStyle={
-                  "text-white absolute top-2  mt-14 bg-transparent hover:bg-transparent h-[30px]"
-                }
-              />
-            </div>
-          </div>
-
+          <div className="w-[78vw] h-[40vh]  aspect-video ml-6 mt-2  ">
+         
+          <iframe className="w-full h-full " src={videoUrl} title="Youtube Video" allowFullScreen> </iframe>
+     </div>
+           
+         
           <div className="flex mt-4 items-center ml-8 text-desc">
             <div className="flex  items-center  w-[480px] mt-2">
               <h
@@ -97,7 +100,7 @@ function MovieDetails() {
                 data-testid="movie-release-date "
                 className="w-[35%] text-[12px] flex items-center ml-2"
               >
-                {getUtc(movies.release_date)}
+                {movies.release_date}
                 <GoDotFill className="text-black ml-2 h-2 w-2" />
               </h>
               <h className="flex  w-[16%] items-center ml-2">
@@ -199,7 +202,10 @@ function MovieDetails() {
                 </div>
               </div>
             </div>
+            
           </div>
+          </div>
+      )}
         </div>
       )}
     </div>
@@ -207,3 +213,7 @@ function MovieDetails() {
 }
 
 export default MovieDetails;
+
+
+
+

@@ -9,10 +9,52 @@ import tomato from "..//assets/tomato.png";
 import MovieCard from "../components/card";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Loading from "./loading";
+import SearchResults from "./searchResult";
+import SearchMovies from "./searchResult";
 
 export const Welcome = () => {
+  const [movies, setMovie] = useState([]);
+  const [backgroundImage, setBackgroundImage] = useState('')
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResult, setSearchResults] = useState([]);
+  useEffect(()=> {
+    const options = {
+      method: "GET",
+      url: "https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1",
+
+      headers: {
+        accept: "application/json",
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzNTVjNWU4MTFhMzNjMzg4ODY2OWU0MDA5NDY4OWM4OCIsInN1YiI6IjY1MDA3Y2M2ZWZlYTdhMDExYWI4MTlmZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.pJ1SehYAuzg8XTFIkpX9rnD5CNrY6Zn_SkoBjkIRZT8",
+      },
+    };
+
+    axios
+      .request(options)
+      .then(function (response) {
+        const results = response.data.results || [];
+        const topMovies = results.slice(0, 1);
+
+        setMovie(topMovies);
+        setBackgroundImage(topMovies[0].poster_path)
+
+      })
+      .catch(function (error) {
+        console.error(error);
+      });
+
+ 
+  }, []);
+
+  
+
   return (
-    <div className=" bg-poster bg-no-repeat bg-cover  h-[100vh] w-[100vw]">
+ 
+      <>
+         {movies.map((movie, index) => (
+    <div key={index} className={' bg-no-repeat bg-cover  h-[100vh] w-[100vw]'}   style={{ backgroundImage: `url('https://image.tmdb.org/t/p/original${movie.poster_path}')` }} >
+
       <div className="flex pt-[15px] justify-around items-center  ">
         <div className="flex items-center">
           <img
@@ -23,10 +65,8 @@ export const Welcome = () => {
           <h className="ml-4 text-white fonr-medium">MovieBox</h>
         </div>
         <div>
-          <MovieSearch
-            placeholder={"Search movie"}
-            iconPresent={<FaSearch className="text-white" />}
-          />
+         <SearchMovies/>
+
         </div>
         <div className="flex items-center">
           <MovieButton
@@ -38,10 +78,10 @@ export const Welcome = () => {
           />
         </div>
       </div>
-
-      <div className="h-[380px] w-[400px] ml-[8%] mt-[10%] pl-3">
+   
+      <div  className="h-[380px] w-[400px] ml-[8%] mt-[10%] pl-3">
         <h className="text-[48px] text-white font-bold">
-          John Wick 3: Parallebum
+          {movie.title}
         </h>
         <div className="flex mt-3 ">
           <h className="text-white flex items-center">
@@ -53,25 +93,28 @@ export const Welcome = () => {
           </h>
         </div>
         <p className="text-white mt-4 text-[14px]">
-          John Wick is on the run after killing a member of the international
-          assassins' guild, and with a $14 million price tag on his head, he is
-          the target of hit men and women everywhere.
+        {movie.overview}
         </p>
-
+     
         <MovieButton
-          buttonStyle={"rounded-lg w-[200px] text-white mt-4 rounded-none"}
+          buttonStyle={"rounded-lg w-[200px] text-white mt-4 "}
           buttonText={"Watch Trailer"}
           buttonIconLeft={<BsPlayCircle />}
         />
       </div>
+    
     </div>
+    ))}
+    </>
+     
   );
 };
 
 export const FeaturedMovie = () => {
   const [movies, setMovie] = useState([]);
-
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
+    setTimeout(() => {
     const options = {
       method: "GET",
       url: "https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1",
@@ -90,13 +133,24 @@ export const FeaturedMovie = () => {
         const topMovies = results.slice(0, 10);
 
         setMovie(topMovies);
+        setLoading(false); 
       })
       .catch(function (error) {
         console.error(error);
       });
+    }, 2000)
   }, []);
+
+
+
   return (
+    <div>
+       {loading ? (
+        // Display the loading component while data is being fetched
+        <Loading/>
+      ) : (
     <div className=" h-fit w-[100vw]">
+    
       <div className="flex w-[90%] mx-auto  justify-between items-center mt-4">
         <h className="text-[36px] font-medium"> Featured Movie</h>
         <a className="text-rose flex items-center cursor-pointer hover:font-bold ">
@@ -115,9 +169,13 @@ export const FeaturedMovie = () => {
             rating={movie.popularity}
             tomato={movie.vote_average}
             genre={movie.genre}
+         
           />
         ))}
       </div>
+      
+    </div>
+      )}
     </div>
   );
 };
@@ -139,7 +197,7 @@ export const Footer = () => {
 
       </div>
       <div className="w-[400px] mt-5 justify-center flex">
-        <h className='text-gray text-[16px] font-semibold'>© 2021 MovieBox by Adriana Eka Prayudha  </h>
+        <h className='text-gray text-[16px] font-semibold'>© 2023 MovieBox11 by ShiRaw11 </h>
       </div>
     </div>
   )
